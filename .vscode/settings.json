@@ -1,0 +1,11 @@
+{
+    "python.formatting.provider": "black",
+    "python.autoComplete.extraPaths": ["../src"],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "python.analysis.extraPaths": [
+        "../src"
+    ],
+    "editor.formatOnSave": true
+}
