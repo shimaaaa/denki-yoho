@@ -3,17 +3,22 @@ from typing import List
 
 
 class Area(str, Enum):
-    HOKKAIDO = "hokkaido"
-    TOHOKU = "tohoku"
-    TOKYO = "tokyo"
-    CHUBU = "chubu"
-    HOKURIKU = "hokuriku"
-    KANSAI = "kansai"
-    CHUGOKU = "chugoku"
-    SHIKOKU = "shikoku"
-    KYUSHU = "kyushu"
-    OKINAWA = "okinawa"
+    hokkaido = "hokkaido"
+    tohoku = "tohoku"
+    tokyo = "tokyo"
+    chubu = "chubu"
+    hokuriku = "hokuriku"
+    kansai = "kansai"
+    chugoku = "chugoku"
+    shikoku = "shikoku"
+    kyushu = "kyushu"
+    okinawa = "okinawa"
 
     @classmethod
     def areas(cls) -> List[str]:
         return [a.value for a in Area]
+
+
+class ForecastType(str, Enum):
+    demand = "demand"
+    usage = "usage"

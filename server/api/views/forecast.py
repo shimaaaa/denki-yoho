@@ -13,12 +13,12 @@ def forecast_list() -> ForecastListResponse:
     return ForecastListResponse(
         demand=[
             DemandPeakForecast(
-                area=Area.HOKKAIDO, hour_24=18, max_demand_kw=4054, supply_kw=4868
+                area=Area.hokkaido, hour_24=18, max_demand_kw=4054, supply_kw=4868
             )
         ],
         usage=[
             UsagePeakForecast(
-                area=Area.HOKKAIDO, hour_24=18, max_demand_kw=4054, supply_kw=4868
+                area=Area.hokkaido, hour_24=18, max_demand_kw=4054, supply_kw=4868
             )
         ],
     )
