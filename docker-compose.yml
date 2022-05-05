@@ -1,11 +1,20 @@
 version: '3'
 services:
-  # web:
-  #   build: .
-  #   volumes:
-  #     - .:/app
-  #   ports:
-  #     - "8000:80"
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile-local
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      db_user: user
+      db_pass: denkidb
+      db_host: db
+      db_name: denkidb
+    working_dir: /app/server
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
   db:
     image: postgres:14.2
     environment:

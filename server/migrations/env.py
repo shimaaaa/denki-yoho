@@ -40,7 +40,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = models.DBSetting.connection_url
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -59,7 +59,7 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = models.DBSetting.connection_url
     connectable = models.Engine
 
     with connectable.connect() as connection:
