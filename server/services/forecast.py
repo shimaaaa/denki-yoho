@@ -19,9 +19,7 @@ class DemandForecastService:
             },
         )
         session = Session(Engine)
-        session.execute(
-            statement=upsert_stmt, params=[record.dict() for record in records]
-        )
+        session.execute(statement=upsert_stmt, params=[record.dict() for record in records])
         session.commit()
 
     # area = Column(
