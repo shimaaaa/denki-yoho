@@ -1,8 +1,9 @@
-from datetime import date
+from datetime import date, timedelta
 from itertools import groupby
 from typing import List, Optional
 
 from data.forecast import AreaDemandForecast, DemandForecast
+from helpers.datetime import today
 from repositories.forecast import DemandForecastRepositories
 
 
@@ -11,9 +12,15 @@ def _area_grouper(x):
 
 
 class DemandForecastService:
-    def list(self, target_date: date) -> AreaDemandForecast:
+    def list(self) -> AreaDemandForecast:
+        target_date = today()
         repos = DemandForecastRepositories()
         forecasts = repos.list(target_date=target_date)
+        if not forecasts:
+            # use latest date data
+            target_date = repos.get_latest_date()
+            assert target_date is not None
+            forecasts = repos.list(target_date=target_date)
         forecasts.sort(key=_area_grouper)
 
         results = []

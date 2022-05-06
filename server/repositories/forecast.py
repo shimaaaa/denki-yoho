@@ -5,12 +5,15 @@ from data.forecast import DemandForecast
 from helpers.constants import Area
 from models import Engine
 from models.forecast import DemandForecast as DemandForecastModel
-from sqlalchemy import Date, select
+from sqlalchemy import Date, desc, select
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Session
 
 
 class DemandForecastRepositories:
+    def _get_session(self):
+        return Session(Engine)
+
     def _from_model(self, model: DemandForecastModel) -> DemandForecast:
         return DemandForecast(
             area=model.area,
@@ -21,7 +24,7 @@ class DemandForecastRepositories:
         )
 
     def list(self, target_date: Optional[date] = None, area: Optional[Area] = None):
-        session = Session(Engine)
+        session = self._get_session()
         stmt = select(DemandForecastModel)
         if target_date:
             stmt = stmt.where(DemandForecastModel.dt.cast(Date) == target_date)
@@ -31,6 +34,14 @@ class DemandForecastRepositories:
         for row in session.scalars(stmt):
             results.append(self._from_model(model=row))
         return results
+
+    def get_latest_date(self) -> Optional[date]:
+        session = self._get_session()
+        stmt = select(DemandForecastModel).order_by(desc(DemandForecastModel.dt)).limit(1)
+        result = session.scalar(stmt)
+        if not result:
+            return None
+        return result.dt.date()
 
     def bulk_save(self, records: List[DemandForecast]):
         stmt = postgresql.insert(DemandForecastModel)

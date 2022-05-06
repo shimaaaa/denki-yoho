@@ -1,17 +1,17 @@
-.PHONY: migrate
-migrate:
-	cd /app/server && alembic upgrade head
-
 .PHONY: makemigrate
 makemigrate:
-	cd /app/server && alembic revision --autogenerate
+	docker-compose run --rm web alembic revision --autogenerate
 
 .PHONY: lint-format
 lint-format:
-	black .
-	isort .
-	flake8 .
+	docker-compose run --rm web black .
+	docker-compose run --rm web isort .
+	docker-compose run --rm web flake8 .
 
-.PHONY: container-migrate
-container-migrate:
+.PHONY: migrate
+migrate:
 	docker-compose run --rm web alembic upgrade head
+
+.PHONY: import-data
+import-data:
+	docker-compose run --rm web python /app/server/commands/import.py all
