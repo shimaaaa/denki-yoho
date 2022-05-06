@@ -6,7 +6,7 @@ from typing import List
 import requests
 from data.forecast import DemandForecast
 from helpers.constants import Area
-from services.forecast import DemandForecastService
+from services import DemandForecastService
 
 
 class TokyoDemandForecastImporter:

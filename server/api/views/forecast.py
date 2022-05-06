@@ -1,17 +1,17 @@
 from typing import List
 
-from data.forecast import DemandPeakForecast, UsagePeakForecast
-from helpers.constants import Area
+from data.forecast import AreaDemandForecast
+from helpers.datetime import today
 from pydantic import BaseModel
+from services import DemandForecastService
 
 
 class ForecastListResponse(BaseModel):
-    demand: List[DemandPeakForecast]
-    usage: List[UsagePeakForecast]
+    data: List[AreaDemandForecast]
 
 
 def forecast_list() -> ForecastListResponse:
-    return ForecastListResponse(
-        demand=[DemandPeakForecast(area=Area.hokkaido, hour_24=18, max_demand_kw=4054, supply_kw=4868)],
-        usage=[UsagePeakForecast(area=Area.hokkaido, hour_24=18, max_demand_kw=4054, supply_kw=4868)],
-    )
+    service = DemandForecastService()
+    target_date = today()
+    forecast_list = service.list(target_date=target_date)
+    return ForecastListResponse(data=forecast_list)

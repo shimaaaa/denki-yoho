@@ -1,31 +1,38 @@
-from typing import List
+from datetime import date
+from itertools import groupby
+from typing import List, Optional
 
-from data.forecast import DemandForecast
-from models import Engine
-from models.forecast import DemandForecast as DemandForecastModel
-from sqlalchemy.dialects import postgresql
-from sqlalchemy.orm import Session
+from data.forecast import AreaDemandForecast, DemandForecast
+from repositories.forecast import DemandForecastRepositories
+
+
+def _area_grouper(x):
+    return x.area
 
 
 class DemandForecastService:
-    def bulk_save(self, records: List[DemandForecast]):
-        stmt = postgresql.insert(DemandForecastModel)
-        upsert_stmt = stmt.on_conflict_do_update(
-            index_elements=["area", "dt"],
-            set_={
-                "actual_result": stmt.excluded.actual_result,
-                "forecast_demand": stmt.excluded.forecast_demand,
-                "forecast_supply": stmt.excluded.forecast_supply,
-            },
-        )
-        session = Session(Engine)
-        session.execute(statement=upsert_stmt, params=[record.dict() for record in records])
-        session.commit()
+    def list(self, target_date: date) -> AreaDemandForecast:
+        repos = DemandForecastRepositories()
+        forecasts = repos.list(target_date=target_date)
+        forecasts.sort(key=_area_grouper)
 
-    # area = Column(
-    #     Enum(Area, name="demand_forecast_area", create_type=False), nullable=False
-    # )
-    # dt = Column(DateTime, nullable=False)
-    # actual_result = Column(Integer, nullable=False)
-    # forecast_demand: Column(Integer, nullable=False)
-    # forecast_supply: Column(Integer, nullable=False)
+        results = []
+        for area, group in groupby(forecasts, key=_area_grouper):
+            peak_demand: Optional[DemandForecast] = None
+            peak_usage: Optional[DemandForecast] = None
+            forecast_list = list(group)
+            for data in forecast_list:
+                if not peak_demand or data.forecast_demand > peak_demand.forecast_demand:
+                    peak_demand = data
+                if not peak_usage or data.forecast_usage_pc > peak_usage.forecast_usage_pc:
+                    peak_usage = data
+            results.append(
+                AreaDemandForecast(
+                    area=area, hourly_forecast_list=forecast_list, peak_demand=peak_demand, peak_usage=peak_usage
+                )
+            )
+        return results
+
+    def bulk_save(self, records: List[DemandForecast]):
+        repos = DemandForecastRepositories()
+        return repos.bulk_save(records)

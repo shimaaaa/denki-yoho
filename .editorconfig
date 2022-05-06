@@ -10,3 +10,6 @@ indent_size = 4
 
 [*.{js,jsx,ts,tsx,vue,css}]
 indent_size = 2
+
+[Makefile]
+indent_style = tab

@@ -1,4 +1,5 @@
-from datetime import date, datetime
+from datetime import datetime
+from typing import List
 
 from helpers.constants import Area
 from pydantic import BaseModel
@@ -11,31 +12,13 @@ class DemandForecast(BaseModel):
     forecast_demand: int
     forecast_supply: int
 
+    @property
+    def forecast_usage_pc(self):
+        return int(self.forecast_demand / self.forecast_supply * 100)
 
-class PeakForecast(BaseModel):
+
+class AreaDemandForecast(BaseModel):
     area: Area
-    date: date
-    hour_24: int
-    max_demand_kw: int
-    supply_kw: int
-
-
-class DemandPeakForecast(PeakForecast):
-
-    """
-
-    需要ピーク時
-
-    """
-
-    pass
-
-
-class UsagePeakForecast(PeakForecast):
-    """
-
-    使用率ピーク時
-
-    """
-
-    pass
+    hourly_forecast_list: List[DemandForecast]
+    peak_demand: DemandForecast
+    peak_usage: DemandForecast

@@ -1,10 +1,16 @@
-from datetime import datetime
-
 from helpers.constants import Area
-from sqlalchemy import Column, DateTime, Enum, Integer
+from helpers.datetime import now, timezone
+from sqlalchemy import Column, DateTime, Enum, Integer, TypeDecorator
 from sqlalchemy.schema import UniqueConstraint
 
 from .settings import ModelBase
+
+
+class LocalDateTime(TypeDecorator):
+    impl = DateTime
+
+    def process_result_value(self, value, dialect):
+        return value.astimezone(tz=timezone())
 
 
 class DemandForecast(ModelBase):
@@ -21,5 +27,5 @@ class DemandForecast(ModelBase):
     actual_result = Column(Integer, nullable=False)
     forecast_demand = Column(Integer, nullable=False)
     forecast_supply = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.now, nullable=False)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
+    created_at = Column(LocalDateTime, default=now, nullable=False)
+    updated_at = Column(LocalDateTime, default=now, onupdate=now, nullable=False)
