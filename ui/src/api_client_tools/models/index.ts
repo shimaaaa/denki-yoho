@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './Area';
-export * from './DemandPeakForecast';
+export * from './AreaDemandForecast';
+export * from './DemandForecast';
 export * from './ForecastListResponse';
-export * from './UsagePeakForecast';

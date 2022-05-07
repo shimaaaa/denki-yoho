@@ -21,7 +21,10 @@
     "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "editorconfig.editorconfig"
+        "editorconfig.editorconfig",
+        "christian-kohler.npm-intellisense",
+        "esbenp.prettier-vscode",
+        "octref.vetur"
     ],
     "remoteEnv": {
         "PYTHONPATH": "${containerWorkspaceFolder}/server",

@@ -1,10 +1,9 @@
 <script lang="ts" setup>
   import { PropType } from 'vue'
-  import { Forecast } from '../models/forecast';
+  import { AreaDemandForecast } from '../models/forecast';
 
   const props = defineProps({
-    category: String,
-    forecasts: Array as PropType<Forecast[]>,
+    areaDemandForecast: AreaDemandForecast,
   });
 </script>
 
@@ -27,20 +26,8 @@
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>{{ props.category }}ピーク時</span>
+        <span>{{ props.areaDemandForecast.areaLabel }}エリア</span>
       </div>
     </template>
-    <div v-for="(forecast, index) in props.forecasts" :key="index" class="text item">
-      <el-row>
-        <el-col>
-          {{ forecast.areaLabel }} ({{forecast.hourRangeLabel}})
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col>
-          <el-progress :percentage="forecast.ratioPc" />
-        </el-col>
-      </el-row>
-    </div>
   </el-card>
 </template>

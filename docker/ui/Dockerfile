@@ -5,9 +5,9 @@ WORKDIR /app
 
 # setup poetry
 RUN pip install poetry
-ADD poetry.lock /app
-ADD pyproject.toml /app
-RUN poetry export -f requirements.txt --output requirements.txt
+ADD ../poetry.lock /app
+ADD ../pyproject.toml /app
+RUN ../poetry export -f requirements.txt --output requirements.txt
 RUN pip install -r requirements.txt
 
 # runner -------------------------

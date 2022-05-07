@@ -1,6 +1,6 @@
 version: '3'
 services:
-  web:
+  api:
     build:
       context: ./
       dockerfile: Dockerfile-local
@@ -15,6 +15,18 @@ services:
       db_name: denkidb
     working_dir: /app/server
     command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+  ui:
+    build:
+      context: ./
+      dockerfile: Dockerfile-ui
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      db_user: user
+    working_dir: /app/ui
+    command: npm run dev
   db:
     image: postgres:14.2
     environment:

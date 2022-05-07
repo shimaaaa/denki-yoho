@@ -14,17 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    DemandPeakForecast,
-    DemandPeakForecastFromJSON,
-    DemandPeakForecastFromJSONTyped,
-    DemandPeakForecastToJSON,
-} from './DemandPeakForecast';
-import {
-    UsagePeakForecast,
-    UsagePeakForecastFromJSON,
-    UsagePeakForecastFromJSONTyped,
-    UsagePeakForecastToJSON,
-} from './UsagePeakForecast';
+    AreaDemandForecast,
+    AreaDemandForecastFromJSON,
+    AreaDemandForecastFromJSONTyped,
+    AreaDemandForecastToJSON,
+} from './AreaDemandForecast';
 
 /**
  * 
@@ -34,16 +28,10 @@ import {
 export interface ForecastListResponse {
     /**
      * 
-     * @type {Array<DemandPeakForecast>}
+     * @type {Array<AreaDemandForecast>}
      * @memberof ForecastListResponse
      */
-    demand: Array<DemandPeakForecast>;
-    /**
-     * 
-     * @type {Array<UsagePeakForecast>}
-     * @memberof ForecastListResponse
-     */
-    usage: Array<UsagePeakForecast>;
+    data: Array<AreaDemandForecast>;
 }
 
 export function ForecastListResponseFromJSON(json: any): ForecastListResponse {
@@ -56,8 +44,7 @@ export function ForecastListResponseFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'demand': ((json['demand'] as Array<any>).map(DemandPeakForecastFromJSON)),
-        'usage': ((json['usage'] as Array<any>).map(UsagePeakForecastFromJSON)),
+        'data': ((json['data'] as Array<any>).map(AreaDemandForecastFromJSON)),
     };
 }
 
@@ -70,8 +57,7 @@ export function ForecastListResponseToJSON(value?: ForecastListResponse | null):
     }
     return {
         
-        'demand': ((value.demand as Array<any>).map(DemandPeakForecastToJSON)),
-        'usage': ((value.usage as Array<any>).map(UsagePeakForecastToJSON)),
+        'data': ((value.data as Array<any>).map(AreaDemandForecastToJSON)),
     };
 }
 
