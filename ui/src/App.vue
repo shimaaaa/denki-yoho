@@ -19,19 +19,16 @@ import { AreaDemandForecast } from './models/forecast';
 </script>
 
 <template>
-    <el-container>
-      <el-header>でんき予報</el-header>
-      <el-main>
+  <div id="app">
+    <v-app>
+      <v-app-bar color="grey-lighten-2">でんき予報</v-app-bar>
+      <v-main>
         <div v-for="(areaDemandForecast,index) in state.areaDemandForecasts" :key="index">
           <ForecastComponent
             :area-demand-forecast="areaDemandForecast"
           />
         </div>
-<el-row>
-  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
-  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-</el-row>
-      </el-main>
-    </el-container>
+      </v-main>
+    </v-app>
+  </div>
 </template>

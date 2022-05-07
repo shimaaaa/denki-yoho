@@ -43,6 +43,15 @@ export class DemandForecastData {
     this.forecastDemand = props.forecastDemand
     this.forecastSupply = props.forecastSupply
   }
+
+  public get nextHourDateTime(): Date {
+    let dt = new Date(this.dateTime.getTime());
+    dt.setHours(dt.getHours() + 1);
+    return dt;
+  }
+  public get ratioPc(): number {
+    return Math.round(this.forecastDemand / this.forecastSupply * 100);
+  }
 }
 
 

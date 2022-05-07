@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-  import { AreaDemandForecast } from '../models/forecast';
+  import { computed } from 'vue';
+import { AreaDemandForecast } from '../models/forecast';
 
   const props = defineProps({
     areaDemandForecast: AreaDemandForecast,
   });
+  const peakDemand = computed(() => props.areaDemandForecast?.peakDemand);
+  const peakUsage = computed(() => props.areaDemandForecast?.peakUsage);
+
 </script>
 
 
@@ -22,18 +26,31 @@
 </style>
 
 <template>
-  <el-card class="box-card">
-    <template #header>
-      <div class="card-header">
-        <span>{{ props.areaDemandForecast.areaLabel }}エリア</span>
-      </div>
+  <v-card class="ma-4 pa-md-4 mx-lg-auto" width="600px">
+    <template v-slot:title>
+      <span>{{ props.areaDemandForecast.areaLabel }}エリア</span>
     </template>
-    <div class="text item">
-      <el-row>
-        <el-col :span="8"><div class="grid-content bg-purple">aaa</div></el-col>
-        <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-      </el-row>
-    </div>
-  </el-card>
+
+    <v-card-text>
+
+    <v-table>
+      <tbody>
+        <tr>
+          <td>需要ピーク</td>
+          <td>{{ peakDemand?.dateTime.getHours() }}時
+          ～{{ peakDemand?.nextHourDateTime.getHours() }}時
+          </td>
+          <td>{{peakDemand?.ratioPc}}%</td>
+        </tr>
+        <tr>
+          <td>使用率ピーク</td>
+          <td>{{ peakUsage?.dateTime.getHours() }}時
+          ～{{ peakUsage?.nextHourDateTime.getHours() }}時
+          </td>
+          <td>{{peakUsage?.ratioPc}}%</td>
+        </tr>
+      </tbody>
+    </v-table>
+    </v-card-text>
+  </v-card>
 </template>

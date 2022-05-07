@@ -1,23 +1,33 @@
 {
     "name": "denki-yoho-ui",
-    "private": true,
     "version": "0.0.0",
+    "private": true,
     "scripts": {
+        "serve": "vite preview",
+        "build": "vite build",
         "dev": "vite --host 0.0.0.0",
-        "build": "vue-tsc --noEmit && vite build",
-        "preview": "vite preview",
         "download-schema": "wget http://127.0.0.1:8000/openapi.json -O openapi.json",
-        "generate-client": "openapi-generator-cli generate -g typescript-fetch -i ./openapi.json -o ./src/api_client_tools"
+        "generate-client": "openapi-generator-cli generate -g typescript-fetch -i ./openapi.json -o ./src/api_client_tools",
+        "preview": "vite preview"
     },
     "dependencies": {
-        "element-plus": "^2.0.2",
-        "vue": "^3.2.25"
+        "@mdi/font": "5.9.55",
+        "roboto-fontface": "*",
+        "vue": "^3.2.25",
+        "vuetify": "^3.0.0-beta.0",
+        "webfontloader": "^1.0.0"
     },
     "devDependencies": {
         "@openapitools/openapi-generator-cli": "^2.4.26",
+        "@types/webfontloader": "^1.0.0",
         "@vitejs/plugin-vue": "^2.2.0",
+        "@vuetify/vite-plugin": "^1.0.0-alpha.0",
+        "sass": "^1.38.0",
+        "sass-loader": "^10.0.0",
         "typescript": "^4.5.4",
         "vite": "^2.9.8",
-        "vue-tsc": "^0.29.8"
+        "vue-cli-plugin-vuetify": "~2.4.8",
+        "vue-tsc": "^0.29.8",
+        "vuetify-loader": "^2.0.0-alpha.0"
     }
 }
