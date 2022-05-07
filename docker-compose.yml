@@ -1,41 +1,51 @@
-version: '3'
+version: "3"
 services:
-  api:
-    build:
-      context: ./
-      dockerfile: Dockerfile-local
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    environment:
-      db_user: user
-      db_pass: denkidb
-      db_host: db
-      db_name: denkidb
-    working_dir: /app/server
-    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
-  ui:
-    build:
-      context: ./
-      dockerfile: Dockerfile-ui
-    volumes:
-      - .:/app
-    ports:
-      - "3000:3000"
-    environment:
-      db_user: user
-    working_dir: /app/ui
-    command: npm run dev
-  db:
-    image: postgres:14.2
-    environment:
-      POSTGRES_PASSWORD: denkidb
-      POSTGRES_USER: user
-      POSTGRES_DB: denkidb
-    ports:
-      - 5432:5432
-    volumes:
-      - db-data:/var/lib/postgresql/data
+    web:
+        container_name: web
+        image: nginx:alpine
+        depends_on:
+            - api
+            - ui
+        ports:
+            - "80:80"
+        volumes:
+            - ./web/nginx/conf.d:/etc/nginx/conf.d
+    api:
+        build:
+            context: ./
+            dockerfile: Dockerfile-local
+        volumes:
+            - .:/app
+        ports:
+            - "8000:8000"
+        environment:
+            db_user: user
+            db_pass: denkidb
+            db_host: db
+            db_name: denkidb
+        working_dir: /app/server
+        command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+    ui:
+        build:
+            context: ./
+            dockerfile: Dockerfile-ui
+        volumes:
+            - .:/app
+        ports:
+            - "3000:3000"
+        environment:
+            db_user: user
+        working_dir: /app/ui
+        command: npm run dev
+    db:
+        image: postgres:14.2
+        environment:
+            POSTGRES_PASSWORD: denkidb
+            POSTGRES_USER: user
+            POSTGRES_DB: denkidb
+        ports:
+            - 5432:5432
+        volumes:
+            - db-data:/var/lib/postgresql/data
 volumes:
-  db-data:
+    db-data:

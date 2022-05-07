@@ -5,7 +5,7 @@ export class DenkiYohoApiClient {
 
   private static getClient() {
     const conf = new Configuration({
-      basePath: 'http://localhost:8000',
+      basePath: '',
     });
     return new DefaultApi(conf);
   }
