@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { PropType } from 'vue'
   import { AreaDemandForecast } from '../models/forecast';
 
   const props = defineProps({
@@ -29,5 +28,12 @@
         <span>{{ props.areaDemandForecast.areaLabel }}エリア</span>
       </div>
     </template>
+    <div class="text item">
+      <el-row>
+        <el-col :span="8"><div class="grid-content bg-purple">aaa</div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+      </el-row>
+    </div>
   </el-card>
 </template>

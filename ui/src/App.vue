@@ -1,9 +1,8 @@
 <script setup lang="ts">
   import { reactive } from 'vue';
-  import { Category } from './constants';
-  import ForecastComponent from './components/Forecast.vue';
-  import { AreaDemandForecast, DemandForecastData } from './models/forecast';
-  import { DenkiYohoApiClient } from './api_client'
+import { DenkiYohoApiClient } from './api_client';
+import ForecastComponent from './components/Forecast.vue';
+import { AreaDemandForecast } from './models/forecast';
 
   interface State {
     areaDemandForecasts: Array<AreaDemandForecast>
@@ -23,11 +22,16 @@
     <el-container>
       <el-header>でんき予報</el-header>
       <el-main>
-        <el-row v-for="(areaDemandForecast,index) in state.areaDemandForecasts" :key="index">
+        <div v-for="(areaDemandForecast,index) in state.areaDemandForecasts" :key="index">
           <ForecastComponent
             :area-demand-forecast="areaDemandForecast"
           />
-        </el-row>
+        </div>
+<el-row>
+  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
+  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+</el-row>
       </el-main>
     </el-container>
 </template>

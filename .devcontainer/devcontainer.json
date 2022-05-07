@@ -24,7 +24,8 @@
         "editorconfig.editorconfig",
         "christian-kohler.npm-intellisense",
         "esbenp.prettier-vscode",
-        "octref.vetur"
+        "dbaeumer.vscode-eslint",
+        "vue.volar"
     ],
     "remoteEnv": {
         "PYTHONPATH": "${containerWorkspaceFolder}/server",

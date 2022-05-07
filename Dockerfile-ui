@@ -8,7 +8,7 @@ RUN apt update \
 ADD ui/package.json /app/ui
 ADD ui/package-lock.json /app/ui
 
-RUN npm install && mv ./node_modules / && chown -R node /node_modules
+RUN npm install
 ENV PATH $PATH:/node_modules/.bin
 
 USER node
