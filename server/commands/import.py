@@ -1,5 +1,5 @@
 import click
-from commands.importer import TokyoDemandForecastImporter
+from commands.importer import import_tokyo_forecast
 
 
 @click.group()
@@ -9,12 +9,12 @@ def cli():
 
 @cli.command()
 def all():
-    TokyoDemandForecastImporter.run()
+    import_tokyo_forecast()
 
 
 @cli.command()
 def tokyo():
-    TokyoDemandForecastImporter.run()
+    import_tokyo_forecast()
 
 
 if __name__ == "__main__":

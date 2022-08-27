@@ -3,23 +3,20 @@ from datetime import datetime
 from io import StringIO
 from typing import List
 
-import requests
+from commands.importer.base import DataDownloader, DataTransformer, Importer
 from data.forecast import DemandForecast
 from helpers.constants import Area
-from services import DemandForecastService
 
 
-class TokyoDemandForecastImporter:
+class TokyoDataDownloader(DataDownloader):
     URL = "https://www.tepco.co.jp/forecast/html/images/juyo-s1-j.csv"
-    FORECAST_HEADER = "DATE,TIME,当日実績(万kW),需要電力予測値(万kW),供給力予測値(万kW),使用率(%)"
 
-    @classmethod
-    def _download(cls) -> str:
-        header = {"User-Agent": ""}
-        response = requests.get(cls.URL, headers=header)
-        response.encoding = response.apparent_encoding
-        response.raise_for_status()
-        return response.text
+    def run(self) -> str:
+        return self._fetch(url=self.URL)
+
+
+class TokyoDataTransformer(DataTransformer):
+    FORECAST_HEADER = "DATE,TIME,当日実績(万kW),需要電力予測値(万kW),供給力予測値(万kW),使用率(%)"
 
     @classmethod
     def _extract(cls, raw_data: str) -> str:
@@ -45,14 +42,12 @@ class TokyoDemandForecastImporter:
             )
         return structured_data
 
-    @classmethod
-    def _save(cls, structured_data: List[DemandForecast]):
-        service = DemandForecastService()
-        service.bulk_save(records=structured_data)
+    def run(self, raw_data: str):
+        extracted_data = self._extract(raw_data)
+        structured_data = self._structuralize(extracted_data)
+        return structured_data
 
-    @classmethod
-    def run(cls):
-        raw_data = cls._download()
-        extracted_data = cls._extract(raw_data)
-        structured_data = cls._structuralize(extracted_data)
-        cls._save(structured_data)
+
+def import_tokyo_forecast():
+    importer = Importer(download_strategy=TokyoDataDownloader(), transformer_strategy=TokyoDataTransformer())
+    importer.run()

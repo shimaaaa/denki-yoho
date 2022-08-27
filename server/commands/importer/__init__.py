@@ -1,1 +1,1 @@
-from .tokyo import TokyoDemandForecastImporter
+from .tokyo import import_tokyo_forecast
